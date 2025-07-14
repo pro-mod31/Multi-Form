@@ -143,57 +143,79 @@ const MultiForm = () => {
     const totalPrice = basePrice + addOnTotal;
 
     return (
-        <div className='flex bg-white justify-center items-center p-8 mt-40'>
-            <div className="bg-white rounded-xl shadow-2xl flex w-[900px] overflow-hidden">
-                {/* Sidebar */}
-                <div className="relative w-1/3 p-6">
+        <div className="flex bg-white justify-center items-center px-4 md:p-8 mt-10 md:mt-40">
+            <div className="bg-white rounded-xl shadow-2xl flex flex-col md:flex-row w-full max-w-4xl overflow-hidden">
+                <div className="relative w-full md:w-1/3">
                     <Image
                         src="/bg-sidebar-desktop.svg"
-                        alt="side image"
+                        alt="Sidebar desktop"
                         width={1}
                         height={1}
-                        className='h-full w-full'
+                        className="hidden md:block w-full object-cover"
                     />
-                    <div className="absolute top-0 left-0 z-10 p-10 text-white space-y-6 mt-3">
-                        {["YOUR INFO", "SELECT PLAN", "ADD-ONS", "SUMMARY", "THANK YOU"].map((label, i) => (
-                            <div key={i} className="flex items-center space-x-4">
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${i + 1 === step ? 'bg-blue-300 text-black' : 'border border-white text-black'}`}>
-                                    {i + 1}
-                                </div>
-                                <div>
-                                    <p className="text-xs uppercase text-white">Step {i + 1}</p>
-                                    <p className="font-bold uppercase">{label}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                    <Image
+                        src="/bg-sidebar-mobile.svg"
+                        alt="Sidebar mobile"
+                        width={1}
+                        height={1}
+                        className="block md:hidden w-full h-[200px] object-cover"
+                    />
 
-                {/* Main form content */}
-                <div className='w-2/3 p-8'>
-                    {/* Step 1: Personal Info */}
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 md:left-0 md:translate-x-0 z-10 p-6 md:p-10 text-white w-full md:w-auto md:h-full">
+                        <div className="flex justify-center md:flex-col md:justify-start md:space-y-6 space-x-6 md:space-x-0">
+                            {[1, 2, 3, 4, 5].map((num) => (
+                                <div
+                                    key={num}
+                                    className="flex flex-col md:flex-row items-center md:items-start space-y-2 md:space-y-0 md:space-x-4"
+                                >
+                                    {/* Number Circle */}
+                                    <div
+                                        className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step === num
+                                                ? "bg-blue-300 text-black"
+                                                : "border border-white text-white"
+                                            }`}
+                                    >
+                                        {num}
+                                    </div>
+
+                                    {/* Text block - visible only on md and up */}
+                                    <div className="hidden md:block">
+                                        <p className="text-xs uppercase text-white mb-1">Step {num}</p>
+                                        <p className="font-bold uppercase text-sm">
+                                            {["YOUR INFO", "SELECT PLAN", "ADD-ONS", "SUMMARY", "THANK YOU"][
+                                                num - 1
+                                            ]}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                </div>
+                <div className="w-full md:w-2/3 p-6 md:p-10">
                     {step === 1 && (
                         <>
-                            <h2 className='font-bold text-4xl'>Personal Info</h2>
-                            <p>Please provide your name, email, and phone number</p>
+                            <h2 className="text-2xl md:text-3xl font-bold">Personal Info</h2>
+                            <p className="mt-2 text-gray-600">Please provide your name, email, and phone number</p>
 
-                            <form className='mt-5' onSubmit={handleSubmit(onSubmit)}>
-                                <label className='block text-black text-xl font-bold mb-2' htmlFor='FullName'>Name:</label>
+                            <form className="mt-5" onSubmit={handleSubmit(onSubmit)}>
+                                <label className="block text-black text-sm font-bold mb-1" htmlFor="FullName">Name:</label>
                                 <input
                                     id="FullName"
-                                    className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700'
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
                                     {...register("FullName", {
                                         required: "Full name is required",
                                         minLength: { value: 4, message: "Minimum 4 characters required" },
                                     })}
-                                    placeholder='Pramod Ghimire'
+                                    placeholder="Pramod Ghimire"
                                 />
-                                {errors.FullName && <p className="text-red-500">{errors.FullName.message}</p>}
+                                {errors.FullName && <p className="text-red-500 text-sm mt-1">{errors.FullName.message}</p>}
 
-                                <label className='block text-black text-xl font-bold mt-3' htmlFor='email'>Email:</label>
+                                <label className="block text-black text-sm font-bold mt-4" htmlFor="email">Email:</label>
                                 <input
                                     id="email"
-                                    className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700'
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
                                     {...register("email", {
                                         required: "Email is required",
                                         pattern: {
@@ -201,24 +223,24 @@ const MultiForm = () => {
                                             message: "Enter a valid email address",
                                         },
                                     })}
-                                    placeholder='example@gmail.com'
+                                    placeholder="example@gmail.com"
                                 />
-                                {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+                                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
 
-                                <label className='block text-black text-xl font-bold mt-3' htmlFor='PhoneNbr'>Phone-no:</label>
+                                <label className="block text-black text-sm font-bold mt-4" htmlFor="PhoneNbr">Phone-no:</label>
                                 <input
                                     id="PhoneNbr"
-                                    className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700'
+                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
                                     {...register("PhoneNbr", {
                                         required: "Phone number is required",
                                         minLength: { value: 10, message: "Phone number must be at least 10 digits" },
                                     })}
-                                    placeholder='9840768966'
+                                    placeholder="9840768966"
                                 />
-                                {errors.PhoneNbr && <p className="text-red-500">{errors.PhoneNbr.message}</p>}
+                                {errors.PhoneNbr && <p className="text-red-500 text-sm mt-1">{errors.PhoneNbr.message}</p>}
 
-                                <div className="mt-10 text-right">
-                                    <button type="submit" className="bg-[#02295A] text-white px-6 py-2 rounded-md hover:bg-[#1D3E81] cursor-pointer mt-10">
+                                <div className="mt-8 text-right">
+                                    <button type="submit" className="bg-[#02295A] text-white px-6 py-2 rounded-md hover:bg-[#1D3E81] cursor-pointer">
                                         Next Step
                                     </button>
                                 </div>
@@ -348,6 +370,10 @@ const MultiForm = () => {
             </div>
         </div>
     );
+
 };
 
 export default MultiForm;
+
+
+
